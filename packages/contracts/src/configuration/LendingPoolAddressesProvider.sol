@@ -129,7 +129,7 @@ contract LendingPoolAddressesProvider is SuperOwnable {
      *
      */
     function setLendingPoolConfiguratorImpl(address configurator) external onlyOwner {
-        bytes memory params = abi.encodeWithSignature("initialize(address, address)", address(this), _proxyAdmin);
+        bytes memory params = abi.encodeWithSignature("initialize(address,address)", address(this), _proxyAdmin);
         _updateImpl(LENDING_POOL_CONFIGURATOR, configurator, params);
         emit LendingPoolConfiguratorUpdated(configurator);
     }
