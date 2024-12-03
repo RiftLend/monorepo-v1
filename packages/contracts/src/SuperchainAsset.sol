@@ -75,7 +75,6 @@ contract SuperchainAsset is SuperchainERC20, SuperOwnable {
     function mint(address to_, uint256 amount_) external {
         balances[to_] += amount_;
         totalBalances += amount_;
-        IERC20(underlying).safeTransferFrom(msg.sender, address(this), amount_);
         super._mint(to_, amount_);
     }
 
