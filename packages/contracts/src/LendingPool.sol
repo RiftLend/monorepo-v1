@@ -365,6 +365,7 @@ contract LendingPool is Initializable, LendingPoolStorage, SuperPausable {
 
         _updateStates(reserve, asset, amount, 0, bytes2(uint16(3)));
 
+        IERC20(asset).safeTransferFrom(msg.sender, address(this), amount);
         ISuperchainAsset(superchainAsset).mint(aToken, amount);
 
         (bool isFirstDeposit, uint256 mintMode, uint256 amountScaled) =
