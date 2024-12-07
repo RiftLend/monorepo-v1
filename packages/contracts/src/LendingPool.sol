@@ -33,7 +33,7 @@ import {LendingPoolStorage} from "./LendingPoolStorage.sol";
 
 import {Predeploys} from "@contracts-bedrock/libraries/Predeploys.sol";
 import {ICrossL2Inbox} from "@contracts-bedrock/L2/interfaces/ICrossL2Inbox.sol";
-import {SuperPausable} from "./interop-std/SuperPausable.sol";
+import {SuperPausable} from "@interop-std/src/utils/SuperPausable.sol";
 
 /**
  * @title LendingPool contract

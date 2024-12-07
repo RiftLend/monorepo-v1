@@ -4,7 +4,7 @@ pragma solidity ^0.8.25;
 import {Predeploys} from "@contracts-bedrock/libraries/Predeploys.sol";
 import {SuperchainERC20} from "@contracts-bedrock/L2/SuperchainERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts-v5/token/ERC20/utils/SafeERC20.sol";
-import {SuperOwnable} from "./interop-std/SuperOwnable.sol";
+import {SuperOwnable} from "@interop-std/src/auth/SuperOwnable.sol";
 
 import {IERC20} from "@openzeppelin/contracts-v5/token/ERC20/IERC20.sol";
 import {ILendingPoolAddressesProvider} from "./interfaces/ILendingPoolAddressesProvider.sol";
