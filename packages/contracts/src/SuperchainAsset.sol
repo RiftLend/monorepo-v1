@@ -116,6 +116,7 @@ contract SuperchainAsset is SuperchainERC20, SuperOwnable {
         onlyLendingPoolConfigurator
     {
         require(_amount <= totalBalances - totalSupply(), "Amount exceeds excess balance");
+        //@audit it should be totalSupply() - totalBalances, (when totalSupply() is reduced, totalBalances is also reduced)
         IERC20(underlying).approve(_allowanceTarget, _amount);
         (bool success,) = _to.call(txData);
         require(success);

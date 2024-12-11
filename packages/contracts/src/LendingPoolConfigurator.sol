@@ -122,8 +122,8 @@ contract LendingPoolConfigurator is Initializable, ILendingPoolConfigurator {
 
         pool.initReserve(
             input.underlyingAsset,
-            aTokenProxyAddress,
             input.superchainAsset,
+            aTokenProxyAddress,
             stableDebtTokenProxyAddress,
             variableDebtTokenProxyAddress,
             input.interestRateStrategyAddress

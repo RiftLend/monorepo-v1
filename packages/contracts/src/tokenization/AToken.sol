@@ -170,6 +170,8 @@ contract AToken is Initializable, IncentivizedERC20("ATOKEN_IMPL", "ATOKEN_IMPL"
             );
         } else {
             ISuperchainAsset(_underlyingAsset).burn(receiverOfUnderlying, amount);
+            //@audit this _underlyingAsset and superchain asset are different, check initreserve in configurator
+            //@audit withdraw may not work when amount > balances[aToken] (the case when some superchainAssets are transfered from aToken)
         }
 
         emit Transfer(user, address(0), amount);
