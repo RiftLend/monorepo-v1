@@ -104,7 +104,7 @@ contract LendingPool is Initializable, LendingPoolStorage, SuperPausable {
         _maxNumberOfReserves = 128;
     }
 
-    function deposit(address sender, address asset, uint256 amount, address onBehalfOf, uint16 referralCode)
+    function deposit(address sender, address asset /* underlying */, uint256 amount, address onBehalfOf, uint16 referralCode)
         external
         onlyRouter
     {
@@ -116,8 +116,9 @@ contract LendingPool is Initializable, LendingPoolStorage, SuperPausable {
 
         _updateStates(reserve, asset, amount, 0, bytes2(uint16(3)));
 
+        // get the rVaultToken address
         IERC20(asset).safeTransferFrom(sender, address(this), amount);
-        IERC20(asset).safeIncreaseAllowance(superchainAsset, amount);
+        IERC20(asset).safeIncreaseAllowance(superAsset, amount);
         ISuperchainAsset(superchainAsset).mint(aToken, amount);
 
         (bool isFirstDeposit, uint256 mintMode, uint256 amountScaled) =
@@ -212,6 +213,7 @@ contract LendingPool is Initializable, LendingPoolStorage, SuperPausable {
         );
     }
 
+    // TODO: modify for #33
     function repay(address sender, address asset, uint256 amount, uint256 rateMode, address onBehalfOf)
         external
         onlyRouter
@@ -353,6 +355,7 @@ contract LendingPool is Initializable, LendingPoolStorage, SuperPausable {
         emit ReserveUsedAsCollateral(sender, asset, useAsCollateral);
     }
 
+    // TODO: modify for #33
     function liquidationCall(
         address sender,
         address collateralAsset,
@@ -364,7 +367,8 @@ contract LendingPool is Initializable, LendingPoolStorage, SuperPausable {
     ) external onlyRouter {
         address collateralManager = _addressesProvider.getLendingPoolCollateralManager();
 
-        IERC20(debtAsset).safeTransferFrom(address(this), collateralManager, debtToCover);
+        // TODO: ERROR
+        IERC20(debtAsset).safeTransferFrom(sender, collateralManager, debtToCover);
 
         //solium-disable-next-line
         (bool success, bytes memory result) = collateralManager.delegatecall(

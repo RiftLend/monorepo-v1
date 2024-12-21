@@ -5,12 +5,13 @@ import {Predeploys} from "@contracts-bedrock/libraries/Predeploys.sol";
 import {SuperchainERC20} from "@contracts-bedrock/L2/SuperchainERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts-v5/token/ERC20/utils/SafeERC20.sol";
 import {SuperOwnable} from "@interop-std/auth/SuperOwnable.sol";
+import {ERC4626} from "@openzeppelin/contracts-v5/token/ERC20/extensions/ERC4626.sol";
 
 import {IERC20} from "@openzeppelin/contracts-v5/token/ERC20/IERC20.sol";
 import {ILendingPoolAddressesProvider} from "./interfaces/ILendingPoolAddressesProvider.sol";
 
 /// @dev whenever user uses this with SuperchainTokenBridge, the destination chain will mint aToken (if underlying < totalBalances) and transfer underlying remaining
-contract SuperchainAsset is SuperchainERC20, SuperOwnable {
+contract RVaultAsset is SuperOwnable, ERC4626 {
     using SafeERC20 for IERC20;
 
     string private _name;
@@ -32,7 +33,7 @@ contract SuperchainAsset is SuperchainERC20, SuperOwnable {
         string memory name_,
         string memory symbol_,
         uint8 decimals_,
-        address underlying_,
+        address underlying_, // SuperAsset
         ILendingPoolAddressesProvider provider_,
         address admin_
     ) {
@@ -42,18 +43,6 @@ contract SuperchainAsset is SuperchainERC20, SuperOwnable {
         underlying = underlying_;
         provider = provider_;
         _initializeSuperOwner(uint64(block.chainid), admin_);
-    }
-
-    function name() public view virtual override returns (string memory) {
-        return _name;
-    }
-
-    function symbol() public view virtual override returns (string memory) {
-        return _symbol;
-    }
-
-    function decimals() public view override returns (uint8) {
-        return _decimals;
     }
 
     /// @dev minting more than totalBalances will mint aToken and transfer underlying
@@ -109,7 +98,8 @@ contract SuperchainAsset is SuperchainERC20, SuperOwnable {
         }
         return success;
     }
-
+    
+    // TODO write this out completely.
     /// @dev bridge underlying to another chain using bungee api
     function bridgeUnderlying(address payable _to, bytes memory txData, address _allowanceTarget, uint256 _amount)
         external

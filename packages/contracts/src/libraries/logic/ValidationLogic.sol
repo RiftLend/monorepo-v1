@@ -182,7 +182,8 @@ library ValidationLogic {
                 Errors.VL_COLLATERAL_SAME_AS_BORROWING_CURRENCY
             );
 
-            vars.availableLiquidity = IERC20(asset).balanceOf(reserve.aTokenAddress);
+            // TODO: check this
+            vars.availableLiquidity = IERC20(reserve.superchainAssetAddress).balanceOf(reserve.aTokenAddress);
 
             //calculate the max available loan size in stable rate mode as a percentage of the
             //available liquidity
